@@ -1,0 +1,61 @@
+
+.imgInfo {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+    .imgFond {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    @media (min-width: 675px) {
+        .containerInfo {
+            flex-flow: column;
+        }
+    }
+    .containerInfo {
+        position: absolute;
+        margin: 0 0 3% 4%;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-flow: column-reverse;
+        gap: 15px;
+
+        .containerBtn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .btn {
+                user-select: none;
+                cursor: pointer;
+                color: white;
+                padding: 10px;
+                background-color: #111;
+            }
+
+            .date {
+                padding: 5px;
+                background-color: white;
+                border-radius: 4px;
+            }
+        }
+
+        .imgDesc {
+            background-color: #111;
+            padding: 15px;
+            color: white;
+            border-radius: 5px;
+            width: 90vw;
+        }
+        @media (min-width: 675px) {
+            .imgDesc {
+                max-width: 50vw;
+            }
+        }
+    }
+}

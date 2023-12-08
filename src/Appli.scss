@@ -1,0 +1,86 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.Appli {
+    position: relative;
+
+    .scrollCom {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+        padding: 10px;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 50px;
+        height: 50px;
+        z-index: 90;
+        margin: 3% 4% 0 0;
+        background-color: #111;
+    }
+    .msgToast {
+        transform: translateY(-100%);
+        color: #111;
+        background-color: white;
+        width: fit-content;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 90;
+        padding: 10px;
+        margin: 0 auto 0 auto;
+        position: fixed;
+        border-radius: 5px;
+    }
+}
+
+aside {
+    position: absolute;
+    width: 90vw;
+    transform: translateY(105%);
+    height: auto;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: 50px auto 3% auto;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+    overflow-x: hidden;
+    padding: 0 0 10px 0;
+}
+
+@media (min-width: 768px) {
+
+    .Appli .scrollCom {
+        display: none;
+    }
+
+    aside {
+        max-height: 100vh;
+        transform: translateY(0);
+        width: 30vw;
+        top: 0;
+        right: 0;
+        left: auto;
+        bottom: 0;
+        margin: 3% 4% 3% 0;
+        overflow: hidden;
+    }
+}
+
+// animation message toast
+@keyframes afficherMsg {
+    0% {transform: translateY(-100%);}
+    20% {transform: translateY(101%);}
+    90% {transform: translateY(101%);}
+    100% {transform: translateY(-100%);}
+}
+
+.afficher {
+    animation: 3s afficherMsg ease-in-out;
+}

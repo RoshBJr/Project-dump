@@ -1,0 +1,19 @@
+.ctnReaction {
+    display: flex;
+    gap: 10px;
+
+    .ctnPouceHaut, .ctnPouceBas {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        cursor: pointer;
+    }
+    .compteur {
+        color: white;
+    }
+
+    .icone {
+        width: 20px;
+        height: 20px;
+    }
+}

@@ -1,0 +1,26 @@
+.containerAime {
+    cursor: pointer;
+    position: fixed;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    top: 0;
+    left: 0;
+    margin: 3% 0 0 4%;
+    z-index: 80;
+    background-color: #111;
+    color: rgb(208, 208, 208);
+    border-radius: 5px;
+
+    .aime {
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+    }
+
+    .compteur {
+        color: #9d9ca0;
+        font-size: 18px;
+    }
+}
