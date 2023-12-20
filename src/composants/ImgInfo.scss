@@ -35,7 +35,22 @@
                 cursor: pointer;
                 color: white;
                 padding: 10px;
+                border-radius: 4px;
                 background-color: #111;
+                display: inline-flex;
+                transition: background .3s ease-out;
+
+                &:hover {
+                    background-color: #3c3c3c; 
+                }
+                
+                img {
+                    pointer-events: none;
+                }
+            }
+
+            .left {
+                transform: rotate(180deg);
             }
 
             .date {

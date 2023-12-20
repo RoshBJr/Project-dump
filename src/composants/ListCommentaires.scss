@@ -4,4 +4,16 @@
     gap: 10px;
     justify-content: stretch;
     overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+        width: 5px;
+        border-radius: 20px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(77, 77, 77);
+        border-radius: 20px;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 20px;
+    }
 }
