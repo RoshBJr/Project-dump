@@ -26,9 +26,9 @@ export default function ImgInfo({dateMM, setAjd, ajd}) {
                     <span onClick={() => setAjd(new Date())} className='btn '>
                         <img src={DoubleArrow} alt="Double arrow right" />
                     </span>
-                    <p className='date'>{dateAjd(ajd)}</p>
                 </div>
                 <p className="imgDesc">{idjInfo.description ? idjInfo.description: "Aucune description"}</p>
+                <p className='date'>{dateAjd(ajd)}</p>
             </div>
         </div>
     );

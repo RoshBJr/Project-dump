@@ -16,6 +16,15 @@
             flex-flow: column;
         }
     }
+
+    .date {
+        opacity: .9;
+        padding: 5px;
+        background-color: white;
+        border-radius: 4px;
+        width: fit-content;
+    }
+
     .containerInfo {
         position: absolute;
         margin: 0 0 3% 4%;
@@ -25,12 +34,14 @@
         flex-flow: column-reverse;
         gap: 15px;
 
+
         .containerBtn {
             display: flex;
             align-items: center;
             gap: 10px;
 
             .btn {
+                opacity: .9;
                 user-select: none;
                 cursor: pointer;
                 color: white;
@@ -52,21 +63,17 @@
             .left {
                 transform: rotate(180deg);
             }
-
-            .date {
-                padding: 5px;
-                background-color: white;
-                border-radius: 4px;
-            }
         }
 
         .imgDesc {
+            opacity: .9;
             background-color: #111;
             padding: 15px;
             color: white;
             border-radius: 5px;
             width: 90vw;
         }
+
         @media (min-width: 675px) {
             .imgDesc {
                 max-width: 50vw;
