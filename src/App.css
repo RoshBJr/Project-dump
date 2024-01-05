@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.container-d{
+  border-radius: 4px;
+  border: 1px solid black;
+  padding: 10px 20px;
+  pointer-events: none;
+}
+
+.drop-area {
+  width: fit-content;
+}
+
+.container-drop {
+  border-radius: 4px;
+  border: 1px solid black;
+  width: 500px;
+  min-height: 700px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
