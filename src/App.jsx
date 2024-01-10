@@ -5,18 +5,19 @@ import React, {useEffect, useState} from 'react';
 import {DndContext} from '@dnd-kit/core';
 
 function App() {
-  const [parent, setParent] = useState(null);
+  const [parent, setParent] = useState([]);
   const [drag, setDrag] = useState([]);
   const info = [
     {id: 1, text: "drag me 1"},
-    {id: 2, text: "drag me 2"}
+    {id: 2, text: "drag me 2"},
+    {id: 3, text: "drag me 3"}
   ]
-  const draggable = [];
+  
   useEffect(() => {
     setDrag(
       info.map( i => {
         return(
-          <Draggable id={`draggable${i.id}`}>
+          <Draggable key={Math.random()} id={`draggable${i.id}`}>
             <div className="container-d">{i.text}</div>
           </Draggable>
         )
@@ -26,25 +27,34 @@ function App() {
 
 
   return (
-    <DndContext onDragMove={handleDragEnd}>
-      {/* {!parent ? draggable : null} */}
-      {/* {console.log(drag)} */}
-      {drag}
-      <Droppable id="droppable">
-        {parent === "droppable" ? 
-          <div className="container-drop">{drag}</div>
-          : 
-          <div className="container-drop">
-            <h2 className="text">Drop here</h2>
-          </div>
+    <DndContext onDragEnd={handleDragEnd}>
+      {drag.map(item => {
+        if(!parent.includes(item.props.id)){
+          return(item)
         }
+      })
+      }
+      <Droppable id="droppable">
+        <div className="container-drop">
+          {parent.length != 0 ? 
+            drag.map(item => {
+              if(parent.includes(item.props.id)) {
+                return(item)
+              }
+            })
+            : 
+            <h2 className="text">Drop here</h2>
+          }
+        </div>
       </Droppable>
     </DndContext>
   );
 
-  function handleDragEnd({over}) {
-    // setParent(over ? over.id : parent);
-    console.log(over);
+  function handleDragEnd({active, over}) {
+    setParent(active ? [...parent, active.id] : parent);
+    if(over == null) {
+      setParent(parent.filter(item => item != active.id));
+    }
   }
 }
 
