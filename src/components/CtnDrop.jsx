@@ -6,11 +6,15 @@ export default function CtnDrop(props) {
   const [parent, setParent] = useState([]);
 
   useEffect(() => {
-    setParent(props.mainParent);
+    // setParent(props.mainParent);
+    // console.log(props.mainParent);
+    if(props.mainParent.length != 0) {
+      // console.log(Object.keys(props.mainParent[0])[0]);
+    }
     // console.log(props.drag[0].props.dropid);
-    props.drag.map(item => {
-      // console.log(item.props.dropid);
-    })
+    // props.drag.map(item => {
+    //   // console.log(item.props.dropid);
+    // })
   }, [props.mainParent, props.drag])
 
   return (

@@ -27,6 +27,11 @@ function App() {
         )
       })
     );
+    setMainParent(
+      ctn.map(i => {
+        return({[`droppable${i}`]:[]})
+      })
+    );
   }, [])
 
 
@@ -56,7 +61,12 @@ function App() {
   );
 
   function handleDragEnd({active, over}) {
-    setMainParent(active && over ? [...mainParent, over.id + active.id,] : mainParent);
+    if(over && active) {
+      // console.log(over.id);
+      // console.log(active.id);
+      console.log(mainParent[0][over.id]);
+    }
+    // setMainParent(active && over ? [...mainParent, over.id + active.id,] : mainParent);
     if(over == null) {
       setMainParent(mainParent.filter(item => !item.includes(active.id)));
     }
