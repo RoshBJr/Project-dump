@@ -1,30 +1,24 @@
 import { useEffect, useState } from 'react';
 import {Droppable} from '../components/Droppable';
-import { DndContext } from '@dnd-kit/core';
 
 export default function CtnDrop(props) {
   const [parent, setParent] = useState([]);
 
   useEffect(() => {
-    // setParent(props.mainParent);
-    // console.log(props.mainParent);
-    if(props.mainParent.length != 0) {
-      // console.log(Object.keys(props.mainParent[0])[0]);
+    console.log(props.mainParent);
+    if(props.mainParent.length !== 0) {
+      let id = props.id - 1;
+      let key = Object.keys(props.mainParent[id])[0];
+      setParent(props.mainParent[id][key]);
     }
-    // console.log(props.drag[0].props.dropid);
-    // props.drag.map(item => {
-    //   // console.log(item.props.dropid);
-    // })
-  }, [props.mainParent, props.drag])
+  }, [props.mainParent])
 
   return (
       <Droppable id={`droppable${props.id}`}>
         <div className="container-drop">
-          {parent.length != 0 ? 
+          {parent.length !== 0 ? 
             props.drag.map(item => {
-              let id = `droppable${props.id}${item.props.id}`;
-              if(parent.includes(id)) {
-                // console.log(item);
+              if(parent.includes(item.props.id)) {
                 return(item)
               }
             })
@@ -34,11 +28,4 @@ export default function CtnDrop(props) {
         </div>
       </Droppable>
   );
-
-  function handleDragEnd({active, over}) {
-    setParent(active && over ? [...parent, active.id] : parent);
-    if(over == null) {
-      setParent(parent.filter(item => !item.includes(active.id)));
-    }
-  }
 }

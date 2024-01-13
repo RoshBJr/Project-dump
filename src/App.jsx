@@ -1,6 +1,5 @@
 import './App.css';
 import {Draggable} from './components/Draggable';
-import {Droppable} from './components/Droppable';
 import React, {useEffect, useState} from 'react';
 import {DndContext} from '@dnd-kit/core';
 import CtnDrop from './components/CtnDrop';
@@ -15,7 +14,6 @@ function App() {
     {id: 3, text: "drag me 3"}
   ];
   const ctn = [1,2,3];
-  
 
   useEffect(() => {
     setDrag(
@@ -34,14 +32,13 @@ function App() {
     );
   }, [])
 
-
   return(
     <DndContext onDragEnd={handleDragEnd}>
       {
         drag.map(item => {
-          if(!mainParent.includes(item.props.id)){
+          // if(!(Object.keys(mainParent).includes(item.props.id))){
             return(item)
-          }
+          // }
         })
       }
       <div className="drop-container">
@@ -62,26 +59,17 @@ function App() {
 
   function handleDragEnd({active, over}) {
     if(over && active) {
-      // console.log(over.id);
-      // console.log(active.id);
-      console.log(mainParent[0][over.id]);
+      mainParent.forEach(i => {
+        if(i[over.id]) {
+          i[over.id].push(active.id);
+        }
+      });
+      setMainParent([...mainParent]);
     }
-    // setMainParent(active && over ? [...mainParent, over.id + active.id,] : mainParent);
-    if(over == null) {
-      setMainParent(mainParent.filter(item => !item.includes(active.id)));
-    }
-  }
-
-  // function isDoubled() {
-  //   // let i = props.parent.reduce((acc, cur) => (cur == id ? acc+1: acc),0);
-  //   // if(i == 1) return;
-  //   let newParent = parent.filter((el, index) => {
-  //     return parent.indexOf(el) === index;
-  //   });
-  //   if(newParent.length % 2 != 0) newParent.slice(1);
-  //   // setDropContent(newParent);
-  //   setParent(newParent);
-  // }
+    // if(over == null) {
+    //   setMainParent(mainParent.filter(item => !item.includes(active.id)));
+    // }
+  } 
 }
 
 export default App;
