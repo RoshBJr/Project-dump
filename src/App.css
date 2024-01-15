@@ -48,12 +48,16 @@
   width: fit-content;
 }
 
+#root {
+  display: flex;
+}
+
 .drop-container {
   display: flex;
   flex-flow: row nowrap;
 }
 
-.container-drop {
+.drop {
   border-radius: 4px;
   border: 1px solid black;
   width: 500px;

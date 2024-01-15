@@ -6,11 +6,12 @@ export function Droppable(props) {
     id: props.id,
   });
   const style = {
-    opacity: isOver ? 1 : 0.5,
+    color: isOver ? 'green' : undefined,
   };
-
+  
+  
   return (
-    <div className="drop-area" ref={setNodeRef} style={style}>
+    <div className='drop' ref={setNodeRef} style={style}>
       {props.children}
     </div>
   );
