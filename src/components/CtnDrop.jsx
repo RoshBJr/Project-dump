@@ -5,7 +5,7 @@ export default function CtnDrop(props) {
   const [parent, setParent] = useState([]);
 
   useEffect(() => {
-    console.log(props.mainParent);
+    // console.log(props.mainParent);
     if(props.mainParent.length !== 0) {
       let id = props.id - 1;
       let key = Object.keys(props.mainParent[id])[0];

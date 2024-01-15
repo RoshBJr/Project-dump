@@ -8,6 +8,7 @@ import CtnDrop from './components/CtnDrop';
 function App() {
   const [mainParent, setMainParent] = useState([]);
   const [drag, setDrag] = useState([]);
+  const [dragStat, setDragStat] = useState([]);
   const info = [
     {id: 1, text: "drag me 1"},
     {id: 2, text: "drag me 2"},
@@ -30,16 +31,40 @@ function App() {
         return({[`droppable${i}`]:[]})
       })
     );
+    setDragStat(drag);
   }, [])
+
+  useEffect(() => {
+    console.log(dragStat);
+  }, [dragStat])
+
+  useEffect(() => {
+    drag.map(item => {
+      // if(!(Object.keys(mainParent).includes(item.props.id))){
+        // Object.values(mainParent[0])[0].includes(item.props.id)
+        mainParent.forEach(drop => {
+          if(drop[Object.keys(drop)[0]].includes(item.props.id)) {
+            if(dragStat === drag) {
+              setDragStat(drag.filter( i => i != item));
+            } else {
+              setDragStat(dragStat.filter( i => i != item));
+            }
+          }
+        })
+      // }
+    })
+  }, [mainParent])
 
   return(
     <DndContext onDragEnd={handleDragEnd}>
       {
-        drag.map(item => {
-          // if(!(Object.keys(mainParent).includes(item.props.id))){
-            return(item)
-          // }
-        })
+
+      }
+      {
+        dragStat.length != 0 ?
+        dragStat.map(item => {return item;})
+        :
+        drag.map(item => {return item;})
       }
       <div className="drop-container">
         {ctn.map(item => {
