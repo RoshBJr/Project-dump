@@ -48,7 +48,7 @@
   width: fit-content;
 }
 
-#root {
+.container-drop {
   display: flex;
 }
 
@@ -67,6 +67,12 @@
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
+}
+
+.drag {
+  border-radius: 4px;
+  border: 1px solid black;
+  padding: 10px 10px;
 }
 
 button {

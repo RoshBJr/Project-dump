@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DndContext} from '@dnd-kit/core';
 
 import {Droppable} from './components/Droppable';
@@ -7,31 +7,53 @@ import "./App.css"
 
 function App() {
   const containers = ['A', 'B', 'C'];
+  const draggables = [1, 2, 3];
   const [parent, setParent] = useState(null);
+  const [lastDragged, setLastDragged] = useState([]);
   const draggableMarkup = (
-    <Draggable id="draggable">Drag me</Draggable>
+    draggables.map(item => {
+      return(
+        <Draggable key={item} id={`draggable${item}`}>
+          Drag me {item}
+        </Draggable>
+      )
+    })
   );
+
+  useEffect(() => {
+    // console.log(parent);
+  }, [parent])
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      {parent === null ? draggableMarkup : null}
-
-      {containers.map((id) => (
-        // We updated the Droppable component so it would accept an `id`
-        // prop and pass it to `useDroppable`
-        <Droppable key={id} id={id}>
-          {parent === id ? draggableMarkup : 'Drop here'}
-        </Droppable>
-      ))}
+      {
+        draggableMarkup.map(item => {
+          if(lastDragged.includes(item.props.id)) return;
+          return(item)
+        })
+      }
+      <div className="container-drop">
+        {containers.map((id) => (
+          // We updated the Droppable component so it would accept an `id`
+          // prop and pass it to `useDroppable`
+          <Droppable key={id} id={id} parent={parent} drag={draggableMarkup}
+            lastDragged={lastDragged} >
+          </Droppable>
+        ))}
+      </div>
     </DndContext>
   );
 
   function handleDragEnd(event) {
     const {over} = event;
-
-    // If the item is dropped over a container, set it as the parent
-    // otherwise reset the parent to `null`
-    setParent(over ? over.id : null);
+    if(event.over) {
+      setLastDragged([...lastDragged, event.active.id]);
+    } else {
+      setLastDragged(
+        lastDragged.filter( item => item != event.active.id)
+      )
+    }
+    setParent(event.over ? event : null);
   }
 }
 
