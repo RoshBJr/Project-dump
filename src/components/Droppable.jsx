@@ -2,23 +2,28 @@ import React, { useEffect, useState } from 'react';
 import {useDroppable} from '@dnd-kit/core';
 
 export function Droppable(props) {
-  const [dragIds, setDragIds] = useState([]);
-  
+  let lsDragIds = localStorage.getItem(`${props.id}`);
+  const [dragIds, setDragIds] = useState(
+    lsDragIds ? JSON.parse(lsDragIds): []
+  );
   useEffect(() => {
     if(props.parent === null) return;
 
-    if(dragIds.includes(props.parent.active.id) && 
-        props.parent.over.id !== props.id) {
+    if(dragIds.includes(props.parent[1].id) && 
+        props.parent[0].id !== props.id) {
           setDragIds(
-            dragIds.filter( item => item !== props.parent.active.id)
+            dragIds.filter( item => item !== props.parent[1].id)
           )
     }
 
-    if(props.parent.over.id !== props.id) return;
-    setDragIds([...dragIds, props.parent.active.id]);
+    if(props.parent[0].id !== props.id) return;
+    setDragIds([...dragIds, props.parent[1].id]);
 
   }, [props.parent]);
 
+  useEffect(() => {
+    localStorage.setItem(`${props.id}`, JSON.stringify(dragIds));
+  }, [dragIds]);
 
   useEffect(() => {
     if(props.parent === null && props.lastDragged.length === 0) {
