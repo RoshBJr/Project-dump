@@ -48,16 +48,12 @@
   width: fit-content;
 }
 
-.container-drop {
-  display: flex;
-}
-
 .drop-container {
   display: flex;
   flex-flow: row nowrap;
 }
 
-.drop {
+.drop, .backlog {
   border-radius: 4px;
   border: 1px solid black;
   width: 500px;
@@ -67,6 +63,10 @@
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
+}
+
+.main {
+  display: flex;
 }
 
 .drag {

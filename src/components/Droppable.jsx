@@ -5,28 +5,30 @@ export function Droppable(props) {
   const [dragIds, setDragIds] = useState([]);
   
   useEffect(() => {
-    if(props.parent == null) return;
+    if(props.parent === null) return;
+
     if(dragIds.includes(props.parent.active.id) && 
-        props.parent.over.id != props.id) {
+        props.parent.over.id !== props.id) {
           setDragIds(
-            dragIds.filter( item => item != props.parent.active.id)
+            dragIds.filter( item => item !== props.parent.active.id)
           )
     }
-    if(props.parent.over.id != props.id) return;
+
+    if(props.parent.over.id !== props.id) return;
     setDragIds([...dragIds, props.parent.active.id]);
+
   }, [props.parent]);
 
+
   useEffect(() => {
-    // console.log(dragIds);
-    if(props.parent == null && props.lastDragged.length == 0) {
+    if(props.parent === null && props.lastDragged.length === 0) {
       return setDragIds(props.lastDragged);
-      // console.log('last dragged ',props.lastDragged);
-      // console.log('dragids ',dragIds);
     }
-    if(props.parent == null && props.lastDragged.length != 0 && dragIds.length != 0) {
-      return setDragIds(
-        dragIds.filter(item => item == props.lastDragged)
-      );
+    if(props.parent === null && props.lastDragged.length !== 0 
+      && dragIds.length !== 0) {
+        return setDragIds(
+          dragIds.filter(item => props.lastDragged.includes(item))
+        );
     }
   }, [props.lastDragged])
 
@@ -42,12 +44,16 @@ export function Droppable(props) {
   
   return (
     <div className='drop' ref={setNodeRef} style={style}>
+      <h1>{props.id}</h1>
       {
+        dragIds.length !== 0 ?
         props.drag.map(item => {
           if(dragIds.includes(item.props.id)) {
             return(item);
           }
         })
+        :
+        "Drop here"
       }
     </div>
   );
