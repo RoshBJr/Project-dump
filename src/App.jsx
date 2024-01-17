@@ -32,12 +32,17 @@ export default function App() {
   }
   
   useEffect(() => {
-    if(taskList.length == 0) return;
+    // if(taskList.length == 0) return;
     localStorage.setItem("taskList", JSON.stringify(taskList));
     setRenderList(
       taskList.map(item => {
         return(
-          <Draggable key={item.id} id={`draggable${item.id}`}>
+          <Draggable key={item.id} 
+              id={item.id}
+              task={task}
+              taskList={taskList}
+              setTaskList={setTaskList}
+          >
             {item.text}
           </Draggable>
         )
@@ -94,7 +99,7 @@ export default function App() {
     }
     stuff[0] = event.over;
     stuff[1] = event.active;
-    console.log(stuff);
+    // console.log(stuff);
     setParent(event.over ? stuff : null);
   }
 }

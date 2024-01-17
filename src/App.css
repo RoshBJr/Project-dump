@@ -69,6 +69,13 @@
   display: flex;
 }
 
+.cross {
+  pointer-events: all;
+  width: 80px;
+  font-size: 55px;
+  z-index: 99;
+}
+
 .drag {
   border-radius: 4px;
   border: 1px solid black;
