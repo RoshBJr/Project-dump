@@ -9,7 +9,6 @@ export default function App() {
   let lsTaskList = localStorage.getItem("taskList");
   let lsParent = localStorage.getItem("parent");
   let lsLastDragged = localStorage.getItem("lastDragged");
-  console.log();
   const containers = ['To do', 'Doing', 'Done'];
   const [parent, setParent] = useState(
     lsParent ? JSON.parse(lsParent): null
@@ -42,6 +41,10 @@ export default function App() {
               task={task}
               taskList={taskList}
               setTaskList={setTaskList}
+              setLastDragged={setLastDragged}
+              lastDragged={lastDragged}
+              parent={parent}
+              setParent={setParent}
           >
             {item.text}
           </Draggable>
@@ -51,9 +54,7 @@ export default function App() {
   },[taskList])
 
   useEffect(() => {
-    if(lastDragged.length !== 0) {
       localStorage.setItem("lastDragged", JSON.stringify(lastDragged));
-    }
   }, [lastDragged])
 
   useEffect(() => {
@@ -70,7 +71,7 @@ export default function App() {
           <input type="text" 
                 placeholder='Enter new task'
                 onChange={evt=> setTask(evt.target.value)}
-                onKeyDown={evt=> afficherMsg(evt)} 
+                onKeyDown={evt=> afficherMsg(evt)}
           />
           {
             renderList.map(item => {
@@ -81,7 +82,7 @@ export default function App() {
         </div>
           {containers.map((id) => (
             <Droppable key={id} id={id} parent={parent} drag={renderList}
-              lastDragged={lastDragged} >
+              lastDragged={lastDragged} setLastDragged={setLastDragged} >
             </Droppable>
           ))}
       </div>
@@ -91,10 +92,10 @@ export default function App() {
   function handleDragEnd(event) {
     let stuff={};
     if(event.over) {
-      setLastDragged([...lastDragged, event.active.id]);
+      setLastDragged([...new Set([...lastDragged, event.active.id])]);
     } else {
       setLastDragged(
-        lastDragged.filter( item => item !== event.active.id)
+        [...new Set(lastDragged.filter( item => item !== event.active.id))] 
       )
     }
     stuff[0] = event.over;

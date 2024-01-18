@@ -12,12 +12,12 @@ export function Droppable(props) {
     if(dragIds.includes(props.parent[1].id) && 
         props.parent[0].id !== props.id) {
           setDragIds(
-            dragIds.filter( item => item !== props.parent[1].id)
+            [... new Set(dragIds.filter( item => item !== props.parent[1].id))]
           )
     }
 
     if(props.parent[0].id !== props.id) return;
-    setDragIds([...dragIds, props.parent[1].id]);
+    setDragIds([...new Set([...dragIds, props.parent[1].id])]);
 
   }, [props.parent]);
 

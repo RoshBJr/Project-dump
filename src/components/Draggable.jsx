@@ -9,9 +9,11 @@ export function Draggable(props) {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
   } : undefined;
   function removeTask() {
-    // console.log(props.id);
-    console.log(props.taskList);
     props.setTaskList(props.taskList.filter(item => item.id != props.id));
+    props.setLastDragged(
+      [...new Set(props.lastDragged.filter(item => item != props.id))]
+    );
+    
   }
   return (
     <div className="c">
