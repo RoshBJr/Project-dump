@@ -4,64 +4,48 @@ import {Droppable} from './components/Droppable';
 import {Draggable} from './components/Draggable';
 import "./App.css"
 import generate from './code/generateIds';
+import tasklistFromLs from './code/tasklist-ls';
 
 export default function App() {
-  let lsTaskList = localStorage.getItem("taskList");
-  let lsParent = localStorage.getItem("parent");
-  let lsLastDragged = localStorage.getItem("lastDragged");
+  const lsTaskList = localStorage.getItem("lsTaskList");
   const containers = ['To do', 'Doing', 'Done'];
-  const [parent, setParent] = useState(
-    lsParent ? JSON.parse(lsParent): null
-  );
-  const [lastDragged, setLastDragged] = useState(
-    lsLastDragged ? JSON.parse(lsLastDragged):[]
-  );
+  const [taskList, setTaskList] = useState([]);
   const [task, setTask] = useState('');
-  const [renderList, setRenderList] = useState([]);
-  const [taskList, setTaskList] = useState(
-    lsTaskList ? JSON.parse(lsTaskList): []
-  );
   
   function afficherMsg(evt) {
     if(evt.key === "Enter" && task !== '') {
       let id = generate()
-      setTaskList([...taskList, {id: generate(), text: task}]);
+      setTaskList([...taskList, {
+        dragid: id,
+        dropid: "",
+        dom:  <Draggable key={id} id={id} setList={setTaskList} 
+                taskList={taskList}>
+                {task}
+              </Draggable>
+      }]);
       setTask(evt.target.value = '');
     }
   }
-  
-  useEffect(() => {
-    // if(taskList.length == 0) return;
-    localStorage.setItem("taskList", JSON.stringify(taskList));
-    setRenderList(
-      taskList.map(item => {
-        return(
-          <Draggable key={item.id} 
-              id={item.id}
-              task={task}
-              taskList={taskList}
-              setTaskList={setTaskList}
-              setLastDragged={setLastDragged}
-              lastDragged={lastDragged}
-              parent={parent}
-              setParent={setParent}
-          >
-            {item.text}
-          </Draggable>
-        )
-      })
-    );
-  },[taskList])
+  useEffect(()=> {
+    // will only return data if ls has values
+    tasklistFromLs(lsTaskList,setTaskList);
+  }, []);
 
-  useEffect(() => {
-      localStorage.setItem("lastDragged", JSON.stringify(lastDragged));
-  }, [lastDragged])
+  function updateTaskList(activeid, taskList, overid) {
+    const newTaskList =
+        taskList.map(task => {
+          if(task.dragid == activeid) {
+            return {...task, dropid: overid};
+          } else {
+            return task
+          }
+        });
+        setTaskList(newTaskList);
+  }
 
-  useEffect(() => {
-    if(parent !== null) {
-      localStorage.setItem("parent", JSON.stringify(parent));
-    }
-  }, [parent])
+  useEffect(()=> {
+    localStorage.setItem("lsTaskList", JSON.stringify(taskList));
+  }, [taskList]);
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
@@ -74,33 +58,28 @@ export default function App() {
                 onKeyDown={evt=> afficherMsg(evt)}
           />
           {
-            renderList.map(item => {
-              if(lastDragged.includes(item.props.id)) return;
-              return(item)
+            taskList && taskList.map(task => {
+              if(task.dropid !== "") return;
+              return task.dom;
             })
           }
         </div>
           {containers.map((id) => (
-            <Droppable key={id} id={id} parent={parent} drag={renderList}
-              lastDragged={lastDragged} setLastDragged={setLastDragged} >
+            <Droppable 
+              key={id}
+              id={id}
+              taskList={taskList}
+            >
             </Droppable>
           ))}
       </div>
     </DndContext>
   );
 
-  function handleDragEnd(event) {
-    let stuff={};
-    if(event.over) {
-      setLastDragged([...new Set([...lastDragged, event.active.id])]);
-    } else {
-      setLastDragged(
-        [...new Set(lastDragged.filter( item => item !== event.active.id))] 
-      )
-    }
-    stuff[0] = event.over;
-    stuff[1] = event.active;
-    // console.log(stuff);
-    setParent(event.over ? stuff : null);
+  function handleDragEnd(e) {
+    if(e.over == null && taskList.length !== 0) 
+      updateTaskList(e.active.id, taskList, "");
+    if(e.over == null) return;
+    if(e.over) updateTaskList(e.active.id, taskList, e.over.id);
   }
 }
