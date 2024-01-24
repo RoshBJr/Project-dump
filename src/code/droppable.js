@@ -4,7 +4,7 @@ export const buildDroppables = (containers, taskList) => {
 	return (
 		containers.map(
 			(id) => (
-				<Droppable 
+				<Droppable
 					key={id}
 					id={id}
 					taskList={taskList}

@@ -14,7 +14,7 @@ export function Droppable(props) {
   };
   
   return (
-    <div className='drop' ref={setNodeRef} style={style}>
+    <div className='drop min-w-96' ref={setNodeRef} style={style}>
       <h1>{props.id}</h1>
       {
         // render draggables tasks in droppable
