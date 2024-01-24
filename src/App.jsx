@@ -1,15 +1,18 @@
 import {useState} from 'react';
-import {DndContext} from '@dnd-kit/core';
+import {DndContext, MouseSensor} from '@dnd-kit/core';
 import "./App.css"
 import handleDragEnd from './code/handle-drag-end';
-import addTask from './code/add-task';
 import backlog from './code/backlog';
 import { useTaskListFromLs, useUpdatelsTask } from './code/use-effect';
 import { buildDroppables } from './code/droppable';
+import "./output.css";
+import TaskForm from './components/TaskForm';
+import { useSensor } from '@dnd-kit/core';
 
 export default function App() {
   const lsTaskList = localStorage.getItem("lsTaskList");
   const containers = ['To do', 'Doing', 'Done'];
+  const urgencyOptions = ['Low','Alarming','Critical','Highest'];
   const [taskList, setTaskList] = useState([]);
   const [task, setTask] = useState('');
 
@@ -19,15 +22,12 @@ export default function App() {
   useUpdatelsTask(taskList);
 
   return (
-    <DndContext onDragEnd={e => handleDragEnd(e,taskList,setTaskList)}>
+    <DndContext
+      onDragEnd={e => handleDragEnd(e,taskList,setTaskList)}
+    >
       <div className="main">
         <div className="backlog">
           <h1>Backlog</h1>
-          <input type="text" 
-                placeholder='Enter new task'
-                onChange={e => setTask(e.target.value)}
-                onKeyDown={e => addTask(e,taskList,setTaskList,task,setTask)}
-          />
           {
           // render backlog tasks
           backlog(taskList)
@@ -38,6 +38,12 @@ export default function App() {
         buildDroppables(containers, taskList)
         }
       </div>
+      <TaskForm
+        taskList={taskList}
+        setTaskList={setTaskList}
+        containers={containers}
+        urgOptions={urgencyOptions}
+      />
     </DndContext>
   );
 }

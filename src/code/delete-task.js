@@ -8,11 +8,18 @@ export default function deleteTask(setTaskList, curId) {
       return {
         dragid: task.dragid,
         dropid: task.dropid,
-        dom:  <Draggable key={task.dragid} id={task.dragid} 
-                setList={setTaskList}
-              >
-                {task.dom.props.children}
-              </Draggable>
+        taskUrgency: task.taskUrgency,
+        taskName: task.taskName,
+        dom:  
+          <Draggable
+            key={task.dragid}
+            id={task.dragid} 
+            setList={setTaskList} 
+            taskName={task.taskName}
+            dropid={task.dropid}
+            taskUrgency={task.taskUrgency}
+          >
+          </Draggable>
       }
     }));
 }

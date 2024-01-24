@@ -8,11 +8,18 @@ export default function tasklistFromLs(lsTaskList, taskListHk) {
       return {
         dragid: task.dragid,
         dropid: task.dropid,
-        dom:  <Draggable key={task.dragid} id={task.dragid} 
-                setList={taskListHk}
-              >
-                {task.dom.props.children}
-              </Draggable>
+        taskUrgency: task.taskUrgency,
+        taskName: task.taskName,
+        dom:  
+          <Draggable
+            key={task.dragid}
+            id={task.dragid} 
+            setList={taskListHk} 
+            taskName={task.taskName}
+            dropid={task.dropid}
+            taskUrgency={task.taskUrgency}
+          >
+          </Draggable>
       }
     }));
 }
