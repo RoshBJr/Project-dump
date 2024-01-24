@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {useDroppable} from '@dnd-kit/core';
+import { droppableTasks } from '../code/droppable';
 
 export function Droppable(props) {
   const [drop, setDrop] = useState([]);
@@ -16,11 +17,8 @@ export function Droppable(props) {
     <div className='drop' ref={setNodeRef} style={style}>
       <h1>{props.id}</h1>
       {
-        props.taskList &&
-        props.taskList.map(task => {
-          if(task.dropid == props.id) return task.dom;
-          return;
-        })
+        // render draggables tasks in droppable
+        droppableTasks(props.taskList, props.id)
       }
     </div>
   );

@@ -10,13 +10,19 @@ export function Draggable(props) {
   const style = transform ? {
     transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
   } : undefined;
+  
   const removeTask = () => {
     deleteTask(props.setList, props.id);
   }
   return (
-    <div className={`c c${props.id}`}>
+    <div className={`c`}>
     <div onClick={removeTask} className="cross" >X</div>
-    <button  className='drag' ref={setNodeRef} style={style} {...listeners} {...attributes}>
+    <button  className='drag'
+      ref={setNodeRef}
+      style={style}
+      {...listeners} 
+      {...attributes}
+    >
       {props.children}
     </button>
     </div>
