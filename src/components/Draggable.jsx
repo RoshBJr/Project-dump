@@ -22,6 +22,9 @@ export function Draggable(props) {
       taskUrgency={props.taskUrgency}
       setList={props.setList}
       id={props.id}
+      taskList={props.taskList}
+      dropids={props.dropids}
+      urgOptions={props.urgOptions}
     />
     </div>
   );

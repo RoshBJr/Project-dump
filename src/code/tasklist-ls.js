@@ -10,6 +10,7 @@ export default function tasklistFromLs(lsTaskList, taskListHk) {
         dropid: task.dropid,
         taskUrgency: task.taskUrgency,
         taskName: task.taskName,
+        urgOptions: task.urgOptions,
         dom:  
           <Draggable
             key={task.dragid}
@@ -18,6 +19,7 @@ export default function tasklistFromLs(lsTaskList, taskListHk) {
             taskName={task.taskName}
             dropid={task.dropid}
             taskUrgency={task.taskUrgency}
+            urgOptions={task.urgOptions}
           >
           </Draggable>
       }

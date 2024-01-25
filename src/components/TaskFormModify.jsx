@@ -7,13 +7,18 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CustomSelect from './CustomSelect';
-import {createTask} from '../code/add-task';
+import { modifyTask  } from '../code/add-task';
 
-export default function TaskForm(props) {
+export default function TaskFormModify(props) {
   const [open, setOpen] = useState(false);
-  const [urgency, setUrgency] = useState('');
-  const [container, setContainer] = useState('');
+  const [urgency, setUrgency] = useState(props.taskUrgency);
+  const [container, setContainer] = useState(props.dropid);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    console.log("clicked");
+    handleClickOpen();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,16 +29,12 @@ export default function TaskForm(props) {
 
   const handleClose = () => {
     setOpen(false);
+    props.setModify(false);
   };
   
 
   return (
     <Fragment>
-      <div className='fixed bottom-0 right-0 pr-5 pb-5'>
-        <Fab color="primary" aria-label="add" onClick={handleClickOpen}>
-          <AddIcon />
-        </Fab>
-      </div>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -45,7 +46,7 @@ export default function TaskForm(props) {
             const formJson = Object.fromEntries(formData.entries());
             const taskName = formJson.taskname;
             if(taskName == "") return;
-            createTask(props.taskList, props.setTaskList, urgency, taskName, container, props.containers, props.urgOptions);
+            modifyTask(props.taskList, props.setList, urgency, props.taskName, container);
             setContainer('');
             setUrgency('');
             handleClose();
@@ -73,17 +74,12 @@ export default function TaskForm(props) {
                     label={"Task urgency"}
                     options={props.urgOptions}
                 />
-                <CustomSelect
-                    value={container}
-                    setValue={setContainer}
-                    label={"Task state"}
-                    options={props.containers}
-                />
+                
         </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button type="submit">Modify</Button>
         </DialogActions>
       </Dialog>
     </Fragment>
