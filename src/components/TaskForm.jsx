@@ -7,12 +7,16 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import CustomSelect from './CustomSelect';
-import {createTask} from '../code/add-task';
+import {createTask, modifyTask} from '../code/add-task';
+import { updateTaskListModify } from '../code/update-tasklist';
 
 export default function TaskForm(props) {
   const [open, setOpen] = useState(false);
   const [urgency, setUrgency] = useState('');
   const [container, setContainer] = useState('');
+  const [taskName, setTaskName] = useState('');
+  const [blMod, setBlMod] = useState(true);
+  const [modTaskId, setModTaskId] = useState('');
   const inputRef = useRef(null);
 
   const handleClickOpen = () => {
@@ -24,8 +28,27 @@ export default function TaskForm(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setBlMod(true);
+    setModTaskId('');
+    setTaskName('');
+    setContainer('');
+    setUrgency('');
   };
   
+  useEffect(()=> {
+    // console.log(props.taskList);
+    props.taskList.map(task => {
+      if(task.blModify) {
+        updateTaskListModify(props.setTaskList, task.dragid, false);
+        setBlMod(false);
+        setTaskName(task.taskName);
+        setContainer(task.dropid);
+        setUrgency(task.taskUrgency);
+        setModTaskId(task.dragid);
+        handleClickOpen();
+      }
+    });
+  }, [props.taskList])
 
   return (
     <Fragment>
@@ -43,11 +66,16 @@ export default function TaskForm(props) {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
-            const taskName = formJson.taskname;
+            setTaskName(formJson.taskname);
             if(taskName == "") return;
-            createTask(props.taskList, props.setTaskList, urgency, taskName, container, props.containers, props.urgOptions);
-            setContainer('');
-            setUrgency('');
+            if(blMod) {
+              createTask(props.taskList, props.setTaskList, 
+                urgency, taskName, container, props.containers, 
+                props.urgOptions);
+            } else {
+              modifyTask(props.taskList, props.setTaskList, urgency, taskName, container,
+                props.containers, props.urgOptions, modTaskId);
+            }
             handleClose();
           },
         }}
@@ -63,8 +91,9 @@ export default function TaskForm(props) {
                       className='criss'
                       type="text"
                       name='taskname'
+                      onChange={e => setTaskName(e.target.value)}
                       placeholder='Enter new task'
-                    
+                      value={taskName}
                     />
                 </div>
                 <CustomSelect
@@ -83,7 +112,7 @@ export default function TaskForm(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button type="submit">{blMod ? "Create": "Modify"}</Button>
         </DialogActions>
       </Dialog>
     </Fragment>

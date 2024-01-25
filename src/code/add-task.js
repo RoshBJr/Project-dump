@@ -1,7 +1,9 @@
 import { Draggable } from "../components/Draggable";
+import deleteTask from "./delete-task";
 import generate from "./generateIds";
 
-export function createTask(taskList, setTaskList, urge, taskName, container, dropids, urgOptions) {
+export function createTask(taskList, setTaskList, urge, 
+  taskName, container, dropids, urgOptions) {
   const id = generate();
 
   setTaskList(
@@ -12,11 +14,12 @@ export function createTask(taskList, setTaskList, urge, taskName, container, dro
         taskUrgency: urge,
         taskName: taskName,
         urgOptions: urgOptions,
+        blModify: false,
         dom:  
           <Draggable
             key={id}
             id={id} 
-            setList={setTaskList} 
+            setTaskList={setTaskList} 
             taskList={taskList}
             taskName={taskName}
             dropid={container}
@@ -30,31 +33,37 @@ export function createTask(taskList, setTaskList, urge, taskName, container, dro
   );
 }
 
-export function modifyTask(taskList, setTaskList, urge, taskName, container, taskid) {
-  setTaskList(
-    [...taskList,
-      taskList.map(task => {
-        if(task.dragid == taskid) {
-          return({
-            dragid: taskid,
-            dropid: container,
-            taskUrgency: urge,
-            taskName: taskName,
-            dom:  
-              <Draggable
-                key={taskid}
-                id={taskid} 
-                setList={setTaskList} 
-                taskList={taskList}
-                taskName={taskName}
-                dropid={container}
-                taskUrgency={urge}
-              >
-              </Draggable>
-          })
+export function modifyTask(taskList, setTaskList, urge, 
+  taskName, container, dropids, urgOptions, modTaskId) {
+    console.log(modTaskId);
+    
+    deleteTask(setTaskList, modTaskId);
+    const newTaskList = taskList.filter(task => task.dragid !== modTaskId);
+    const id = generate();
+
+    setTaskList(
+      [...newTaskList, 
+        {
+          dragid: id,
+          dropid: container,
+          taskUrgency: urge,
+          taskName: taskName,
+          urgOptions: urgOptions,
+          blModify: false,
+          dom:  
+            <Draggable
+              key={id}
+              id={id} 
+              setTaskList={setTaskList} 
+              taskList={taskList}
+              taskName={taskName}
+              dropid={container}
+              taskUrgency={urge}
+              dropids={dropids}
+              urgOptions={urgOptions}
+            >
+            </Draggable>
         }
-        return task;
-      })
-    ]
-  );
+      ]
+    );
 }

@@ -7,18 +7,16 @@ import Typography from '@mui/joy/Typography';
 import deleteTask from '../code/delete-task';
 import { Fab } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import TaskFormModify from './TaskFormModify';
+import { updateTaskListModify } from '../code/update-tasklist';
 
 export default function BasicCard(props) {
-  const [modify, setModify] = React.useState(false);
 
   const removeTask = () => {
-    deleteTask(props.setList, props.id);
+    deleteTask(props.setTaskList, props.dragid);
   }
 
   const modifyTask = () => {
-    // console.log("modify click");
-    setModify(true);
+    updateTaskListModify(props.setTaskList, props.dragid, true);
   }
 
   return (
@@ -55,22 +53,6 @@ export default function BasicCard(props) {
           Delete
         </Button>
       </CardContent>
-      {/* {
-        modify ?
-          <TaskFormModify
-            taskName={props.taskName}
-            dropid={props.container}
-            taskUrgency={props.taskUrgency}
-            setList={props.setList}
-            id={props.id}
-            taskList={props.taskList}
-            dropids={props.dropids}
-            urgOptions={props.urgOptions}
-            setModify={setModify}
-          />
-        :
-        ""
-      } */}
     </Card>
   );
 }

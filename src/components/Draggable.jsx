@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {useDraggable} from '@dnd-kit/core';
 import BasicCard from './BasicCard';
 
@@ -20,8 +20,8 @@ export function Draggable(props) {
       taskName={props.taskName}
       dropid={props.container}
       taskUrgency={props.taskUrgency}
-      setList={props.setList}
-      id={props.id}
+      setTaskList={props.setTaskList}
+      dragid={props.id}
       taskList={props.taskList}
       dropids={props.dropids}
       urgOptions={props.urgOptions}

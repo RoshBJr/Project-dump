@@ -10,11 +10,12 @@ export default function deleteTask(setTaskList, curId) {
         dropid: task.dropid,
         taskUrgency: task.taskUrgency,
         taskName: task.taskName,
+        blModify: task.blModify,
         dom:  
           <Draggable
             key={task.dragid}
             id={task.dragid} 
-            setList={setTaskList} 
+            setTaskList={setTaskList} 
             taskName={task.taskName}
             dropid={task.dropid}
             taskUrgency={task.taskUrgency}
