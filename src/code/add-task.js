@@ -19,7 +19,7 @@ export function createTask(taskList, setTaskList, urge,
           <Draggable
             key={id}
             id={id} 
-            setTaskList={setTaskList} 
+            setTaskList={setTaskList}
             taskList={taskList}
             taskName={taskName}
             dropid={container}
@@ -35,7 +35,6 @@ export function createTask(taskList, setTaskList, urge,
 
 export function modifyTask(taskList, setTaskList, urge, 
   taskName, container, dropids, urgOptions, modTaskId) {
-    console.log(modTaskId);
     
     deleteTask(setTaskList, modTaskId);
     const newTaskList = taskList.filter(task => task.dragid !== modTaskId);

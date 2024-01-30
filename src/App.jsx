@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {DndContext, DragOverlay, MouseSensor} from '@dnd-kit/core';
+import {DndContext,closestCenter} from '@dnd-kit/core';
 import "./App.css"
 import handleDragEnd from './code/handle-drag-end';
 import backlog from './code/backlog';
@@ -7,7 +7,6 @@ import { useTaskListFromLs, useUpdatelsTask } from './code/use-effect';
 import { buildDroppables } from './code/droppable';
 import "./output.css";
 import TaskForm from './components/TaskForm';
-import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 
 export default function App() {
   const lsTaskList = localStorage.getItem("lsTaskList");
@@ -22,7 +21,7 @@ export default function App() {
 
   return (
     <DndContext
-      modifiers={[restrictToFirstScrollableAncestor]}
+      collisionDetection={closestCenter}
       onDragEnd={e => handleDragEnd(e,taskList,setTaskList)}
     >
         <div className="main w-auto">

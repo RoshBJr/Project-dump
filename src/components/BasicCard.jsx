@@ -22,7 +22,7 @@ export default function BasicCard(props) {
   return (
     <Card sx={{ width: 320 }}>
       <div className='flex flex-col'>
-        <Fab onMouseDown={modifyTask} className='self-end size-[30px] min-h-[30px]' color="primary" aria-label="edit">
+        <Fab onMouseDown={modifyTask} className='z-20 self-end size-[30px] min-h-[30px]' color="primary" aria-label="edit">
           <EditIcon className='size-3' />
         </Fab>
         <Typography level="title-lg">{props.taskName}</Typography>
