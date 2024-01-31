@@ -7,6 +7,7 @@ import { useTaskListFromLs, useUpdatelsTask } from './code/use-effect';
 import { buildDroppables } from './code/droppable';
 import "./output.css";
 import TaskForm from './components/TaskForm';
+import { restrictToFirstScrollableAncestor } from '@dnd-kit/modifiers';
 
 export default function App() {
   const lsTaskList = localStorage.getItem("lsTaskList");
@@ -21,7 +22,7 @@ export default function App() {
 
   return (
     <DndContext
-      collisionDetection={closestCenter}
+      modifiers={[restrictToFirstScrollableAncestor]}
       onDragEnd={e => handleDragEnd(e,taskList,setTaskList)}
     >
         <div className="main w-auto">
