@@ -1,16 +1,20 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PlusIcon from '../icons/PlusIcon';
 import {Column, Id, Task} from '../types';
 import ColumnContainer from './ColumnContainer';
-import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
+import TaskCard from './TaskCard';
 
 export default function Board() {
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const [columns, setColumns] = useState<Column[]>([]);
+    const lsTasks:Task[] = JSON.parse(localStorage.getItem("lsTasks") || '""');
+    const lsColumns:Column[] = JSON.parse(localStorage.getItem("lsColumns")||'""');
+    const [tasks, setTasks] = useState<Task[]>(lsTasks ? lsTasks: []);
+    const [columns, setColumns] = useState<Column[]>(lsColumns ? lsColumns: []);
     const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
     const [activeCol, setActiveCol] = useState<Column|null>(null);
+    const [activeTask, setActiveTask] = useState<Task|null>(null);
     const sensors = useSensors(
             useSensor(PointerSensor, {
                 activationConstraint: {
@@ -19,6 +23,11 @@ export default function Board() {
             })
         );
     
+    useEffect(() => {
+        localStorage.setItem("lsTasks", JSON.stringify(tasks))
+        localStorage.setItem("lsColumns", JSON.stringify(columns))
+    }, [tasks, columns])
+
     function createTask(columnId: Id) {
         const newTask: Task = {
             id: generateId(),
@@ -60,6 +69,36 @@ export default function Board() {
         });
         setTasks(newTasks);
     }
+    function onDragOver(event: DragOverEvent) {
+        const {active, over} = event;
+
+        if(!over) return;
+        const activeId = active.id;
+        const overId = over.id;
+        if(activeId === overId) return;
+        const isActiveATask = active.data.current?.type === "Task";
+        const isOverATask = over.data.current?.type === "Task";
+        if(!isActiveATask) return;
+
+        // I'm dropping a Task over another Task
+        if(isActiveATask && isOverATask) {
+            setTasks( tasks => {
+                const activeIndex = tasks.findIndex(t => t.id === activeId);
+                const overIndex = tasks.findIndex(t => t.id === overId);
+                tasks[activeIndex].columnId = tasks[overIndex].columnId;
+                return arrayMove(tasks, activeIndex, overIndex);
+            });
+        }
+        // I'm dropping a Task over another Column
+        const isOverAColumn = over.data.current?.type === "Column";
+        if(isActiveATask && isOverAColumn) {
+            setTasks( tasks => {
+                const activeIndex = tasks.findIndex(t => t.id === activeId);
+                tasks[activeIndex].columnId = overId;
+                return arrayMove(tasks, activeIndex, activeIndex);
+            });
+        }
+    }
 
     return(
         <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden">
@@ -67,6 +106,7 @@ export default function Board() {
                 sensors={sensors}
                 onDragStart={onDragStart}
                 onDragEnd={onDragEnd}
+                onDragOver={onDragOver}
             >
                 <div className="m-auto flex gap-4">
                     <div className='flex gap-4'>
@@ -131,6 +171,14 @@ export default function Board() {
                                     }
                                 />
                             }
+                            {
+                                activeTask &&
+                                <TaskCard
+                                    task={activeTask}
+                                    deleteTask={deleteTask}
+                                    updateTask={updateTask}
+                                />
+                            }
                         </DragOverlay>,
                         document.body
                     )
@@ -142,18 +190,27 @@ export default function Board() {
     function deleteColumn(id: Id) {
         const filteredColumn = columns.filter( col => col.id !== id);
         setColumns(filteredColumn);
+
+        const newTasks = tasks.filter(t => t.columnId !== id);
+        setTasks(newTasks);
     }
 
     function onDragStart(event: DragStartEvent) {
-        console.log("DRAG START", event);
         if(event.active.data.current?.type === "Column" ) {
             return setActiveCol(event.active.data.current.column);
+        }
+
+        if(event.active.data.current?.type === "Task" ) {
+            return setActiveTask(event.active.data.current.task);
         }
     }
 
     function onDragEnd(event: DragEndEvent) {
-        const {active, over} = event;
+        setActiveCol(null);
+        setActiveTask(null);
 
+        const {active, over} = event;
+        if(active.data.current?.type === "Task") return;
         if(!over) return;
         const activColId = active.id;
         const overColumnId = over.id;
