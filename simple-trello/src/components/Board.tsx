@@ -31,6 +31,14 @@ export default function Board() {
         return Math.floor(Math.random() * 10001);
     }
 
+    function updateColumn(id: Id, title: string) {
+        const newColumns = columns.map( col => {
+            if(col.id !== id) return col;
+            return {...col, title};
+        });
+        setColumns(newColumns);
+    }
+
     return(
         <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden">
             <DndContext
@@ -46,6 +54,7 @@ export default function Board() {
                                     return(
                                         <ColumnContainer
                                             key={col.id}
+                                            updateColumn={updateColumn}
                                             column={col}
                                             deleteColumn={deleteColumn}
                                         />
@@ -67,6 +76,7 @@ export default function Board() {
                             {
                                 activeCol &&
                                 <ColumnContainer
+                                    updateColumn={updateColumn}
                                     column={activeCol}
                                     deleteColumn={deleteColumn} 
                                 />

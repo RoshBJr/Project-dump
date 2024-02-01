@@ -8,3 +8,17 @@ body,
     background-color: black;
     color: white;
 }
+
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(104, 25, 25);
+    border-radius: 10px;
+}
