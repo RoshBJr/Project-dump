@@ -12,6 +12,7 @@ interface Props {
     updateColumn: (id: Id, title: string) => void;
     deleteTask: (id: Id) => void;
     createTask: (columnId: Id) => void;
+    updateTask: (id: Id, content: string) => void; 
     tasks: Task[];
 }
 
@@ -22,7 +23,8 @@ export default function ColumnContainer(props:Props) {
         updateColumn,
         createTask,
         tasks,
-        deleteTask
+        deleteTask,
+        updateTask
     } = props;
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -114,6 +116,7 @@ export default function ColumnContainer(props:Props) {
                 {
                     tasks.map( task => (
                         <TaskCard
+                            updateTask={updateTask}
                             key={task.id} 
                             task={task}
                             deleteTask={deleteTask} 

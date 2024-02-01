@@ -53,6 +53,13 @@ export default function Board() {
         const newTasks = tasks.filter(task => task.id !== taskId);
         setTasks(newTasks);
     }
+    function updateTask(taskId: Id, content: string) {
+        const newTasks = tasks.map( task => {
+            if(task.id !== taskId) return task;
+            return {...task, content};
+        });
+        setTasks(newTasks);
+    }
 
     return(
         <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden">
@@ -68,6 +75,7 @@ export default function Board() {
                                 columns.map(col => {
                                     return(
                                         <ColumnContainer
+                                            updateTask={updateTask}
                                             deleteTask={deleteTask}
                                             key={col.id}
                                             createTask={createTask}
@@ -104,6 +112,7 @@ export default function Board() {
                             {
                                 activeCol &&
                                 <ColumnContainer
+                                    updateTask={updateTask}
                                     deleteTask={deleteTask}
                                     createTask={createTask}
                                     updateColumn={updateColumn}
