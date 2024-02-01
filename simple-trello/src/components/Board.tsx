@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
 import PlusIcon from '../icons/PlusIcon';
-import {Column, Id} from '../types';
+import {Column, Id, Task} from '../types';
 import ColumnContainer from './ColumnContainer';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 
 export default function Board() {
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [columns, setColumns] = useState<Column[]>([]);
     const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
     const [activeCol, setActiveCol] = useState<Column|null>(null);
@@ -17,7 +18,17 @@ export default function Board() {
                 }
             })
         );
+    
+    function createTask(columnId: Id) {
+        const newTask: Task = {
+            id: generateId(),
+            columnId,
+            content: `Task ${tasks.length + 1}`,
+        };
 
+        setTasks([...tasks, newTask]);
+    }
+    
     const createNewColumn = () => {
         const columnToAdd:Column = {
             id: generateId(),
@@ -38,6 +49,10 @@ export default function Board() {
         });
         setColumns(newColumns);
     }
+    function deleteTask(taskId: Id) {
+        const newTasks = tasks.filter(task => task.id !== taskId);
+        setTasks(newTasks);
+    }
 
     return(
         <div className="m-auto flex min-h-screen w-full items-center overflow-x-auto overflow-y-hidden">
@@ -53,10 +68,23 @@ export default function Board() {
                                 columns.map(col => {
                                     return(
                                         <ColumnContainer
+                                            deleteTask={deleteTask}
                                             key={col.id}
+                                            createTask={createTask}
                                             updateColumn={updateColumn}
                                             column={col}
                                             deleteColumn={deleteColumn}
+                                            tasks={
+                                                tasks.filter(
+                                                    task => {
+                                                        return(
+                                                            task.columnId 
+                                                            === 
+                                                            col.id
+                                                        );
+                                                    } 
+                                                )
+                                            }
                                         />
                                     )
                                 })
@@ -76,9 +104,22 @@ export default function Board() {
                             {
                                 activeCol &&
                                 <ColumnContainer
+                                    deleteTask={deleteTask}
+                                    createTask={createTask}
                                     updateColumn={updateColumn}
                                     column={activeCol}
-                                    deleteColumn={deleteColumn} 
+                                    deleteColumn={deleteColumn}
+                                    tasks={
+                                        tasks.filter(
+                                            task => {
+                                                return(
+                                                    task.columnId 
+                                                    === 
+                                                    activeCol.id
+                                                );
+                                            } 
+                                        )
+                                    }
                                 />
                             }
                         </DragOverlay>,
