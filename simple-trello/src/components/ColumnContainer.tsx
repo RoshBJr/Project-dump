@@ -63,7 +63,7 @@ export default function ColumnContainer(props:Props) {
                 style={style}
                 {...attributes}
                 {...listeners}
-                className="bg-gray-900 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col opacity-40 border-2 border-rose-500"
+                className="bg-gray-900 w-[350px] h-[80vh] max-h-[80vh] rounded-md flex flex-col opacity-40 border-2 border-rose-500"
             >
             </div>
         );
@@ -75,7 +75,7 @@ export default function ColumnContainer(props:Props) {
             style={style}
             {...attributes}
             {...listeners}
-            className="bg-gray-900 w-[350px] h-[500px] max-h-[500px] rounded-md flex flex-col">
+            className="bg-gray-900 w-[350px] h-[80vh] max-h-[80vh] rounded-md flex flex-col">
             {/* Column title */}
             <div
                 onClick={() => setEditMode(true)}
