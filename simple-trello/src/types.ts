@@ -9,4 +9,7 @@ export type Task = {
     id: Id;
     columnId: Id;
     content: string;
+    urgency: string[];
+    urgValue: string;
+    dateModified: string;
 }

@@ -16,6 +16,9 @@ body,
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
+ul {
+    padding: 0 !important;
+}
 
 ::-webkit-scrollbar {
     width: 4px;

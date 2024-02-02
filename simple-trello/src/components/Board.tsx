@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 import PlusIcon from '../icons/PlusIcon';
 import {Column, Id, Task} from '../types';
 import ColumnContainer from './ColumnContainer';
-import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, DragEndEvent, DragOverEvent, DragOverlay, DragStartEvent, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import TaskCard from './TaskCard';
+import date from '../code/generateDate';
 
 export default function Board() {
     const lsTasks:Task[] = JSON.parse(localStorage.getItem("lsTasks") || '""');
@@ -33,6 +34,9 @@ export default function Board() {
             id: generateId(),
             columnId,
             content: `Task ${tasks.length + 1}`,
+            urgency: ["None", "Low", "Alarming", "Critical", "Highest"],
+            urgValue: "None",
+            dateModified: date(),
         };
 
         setTasks([...tasks, newTask]);
@@ -62,10 +66,10 @@ export default function Board() {
         const newTasks = tasks.filter(task => task.id !== taskId);
         setTasks(newTasks);
     }
-    function updateTask(taskId: Id, content: string) {
+    function updateTask(taskId: Id, content: string, urgValue: string, dateModified: string) {
         const newTasks = tasks.map( task => {
             if(task.id !== taskId) return task;
-            return {...task, content};
+            return {...task, content, urgValue, dateModified};
         });
         setTasks(newTasks);
     }

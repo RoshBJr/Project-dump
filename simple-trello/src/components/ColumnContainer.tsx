@@ -12,7 +12,7 @@ interface Props {
     updateColumn: (id: Id, title: string) => void;
     deleteTask: (id: Id) => void;
     createTask: (columnId: Id) => void;
-    updateTask: (id: Id, content: string) => void; 
+    updateTask: (id: Id, content: string, urgValue:string, dateModified: string) => void; 
     tasks: Task[];
 }
 
@@ -116,7 +116,7 @@ export default function ColumnContainer(props:Props) {
                 </button>
             </div>
             {/* Column task container */}
-            <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-y-auto">
+            <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-scroll">
                 <SortableContext
                     items={tasksIds}
                 >
