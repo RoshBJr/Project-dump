@@ -1,6 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { Id, Task } from '../types';
-import { ChangeEvent } from 'react';
 import date from '../code/generateDate';
 
 interface Props {
@@ -13,14 +12,13 @@ export default function CustomSelect({task, updateTask}: Props) {
 
   function handleChange(e:any) {
     updateTask(task.id, task.content, e.target.value, date());
-    
   };
 
   return (
     <div>
       <FormControl className='bg-gray-900 w-1/2 h-[50px]'>
         <InputLabel
-          className='text-white'
+          className='text-white ring-red'
           id="demo-simple-select-autowidth-label">
             Task Urgency
         </InputLabel>

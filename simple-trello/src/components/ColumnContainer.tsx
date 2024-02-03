@@ -28,6 +28,7 @@ export default function ColumnContainer(props:Props) {
     } = props;
 
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [tEditMode, setTEditMode] = useState<boolean>(false);
     const tasksIds = useMemo(() => {
         return tasks.map(task => task.id);
     }, [tasks]);
@@ -47,7 +48,7 @@ export default function ColumnContainer(props:Props) {
                 type: "Column",
                 column,
             },
-            disabled: editMode,
+            disabled: tEditMode,
         }
     );
 
@@ -78,7 +79,10 @@ export default function ColumnContainer(props:Props) {
             className="bg-gray-900 w-[350px] h-[80vh] max-h-[80vh] rounded-md flex flex-col">
             {/* Column title */}
             <div
-                onClick={() => setEditMode(true)}
+                onClick={() => {
+                    setEditMode(true);
+                    setTEditMode(true);
+                }}
                 className="bg-black text-md h-[60px] cursor-grab rounded-md rounded-b-none p-3 font-bold border-gray-900 border-4 flex items-center justify-between">
                 <div className="flex gap-2">
                     <div className="flex justify-center items-center bg-gray-900 px-2 py-1 text-sm rounded-full">
@@ -98,12 +102,14 @@ export default function ColumnContainer(props:Props) {
                             autoFocus
                             onBlur={() => {
                                     setEditMode(false);
+                                    setTEditMode(false);
                                 }
                             }
                             onKeyDown={
                                 e => {
                                     if(e.key !== "Enter") return;
                                     setEditMode(false);
+                                    setTEditMode(false);
                                 }
                             }
                         />
@@ -123,6 +129,7 @@ export default function ColumnContainer(props:Props) {
                     {
                         tasks.map( task => (
                             <TaskCard
+                                setColEditMode={setTEditMode}
                                 updateTask={updateTask}
                                 key={task.id} 
                                 task={task}

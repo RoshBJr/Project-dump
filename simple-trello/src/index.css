@@ -7,13 +7,23 @@ body,
 #root {
     background-color: black;
     color: white;
-    -webkit-touch-callout: none; /* iOS Safari */
+    /* -webkit-touch-callout: none; iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
        -moz-user-select: none; /* Old versions of Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
+}
+
+fieldset {
+    border: 2px solid rgb(251, 113, 133) !important;
+}
+.MuiInputBase-root:hover fieldset { 
+    border: 2px solid white !important;
+}
+.css-1ualgfl-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: rgb(244, 63, 94) !important;
 }
 
 ul {

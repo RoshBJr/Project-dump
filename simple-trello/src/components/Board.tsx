@@ -33,7 +33,7 @@ export default function Board() {
         const newTask: Task = {
             id: generateId(),
             columnId,
-            content: `Task ${tasks.length + 1}`,
+            content: ``,
             urgency: ["None", "Low", "Alarming", "Critical", "Highest"],
             urgValue: "None",
             dateModified: date(),
@@ -178,6 +178,7 @@ export default function Board() {
                             {
                                 activeTask &&
                                 <TaskCard
+                                    setColEditMode={null}
                                     task={activeTask}
                                     deleteTask={deleteTask}
                                     updateTask={updateTask}

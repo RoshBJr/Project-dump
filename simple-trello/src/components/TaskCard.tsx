@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import TrashIcon from "../icons/TrashIcon";
 import { Id, Task } from "../types";
 import { useSortable } from "@dnd-kit/sortable";
@@ -10,10 +10,10 @@ interface Props {
     task: Task;
     deleteTask: (id: Id) => void;
     updateTask: (id: Id, content: string, urgValue: string, dateModified:string) => void;
+    setColEditMode: React.Dispatch<SetStateAction<boolean>>|null;
 }
-console.log(date());
 
-export default function TaskCard({task, deleteTask, updateTask}: Props) {
+export default function TaskCard({task, deleteTask, updateTask, setColEditMode}: Props) {
     const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
     const [editMode, setEditMode] = useState<boolean>(false);
 
@@ -21,6 +21,12 @@ export default function TaskCard({task, deleteTask, updateTask}: Props) {
         setEditMode(prev => !prev);
         setMouseIsOver(false);
     }
+
+    useEffect(()=> {
+        if(!setColEditMode) return;
+        if(editMode) return setColEditMode(true);
+        return setColEditMode(false);
+    }, [editMode]);
     
     const {
         setNodeRef,
@@ -56,59 +62,44 @@ export default function TaskCard({task, deleteTask, updateTask}: Props) {
         )
     }
 
-    if(editMode) {
-        return(
-            <div
+    return(
+        <div
                 ref={setNodeRef}
                 style={style}
                 {...attributes}
                 {...listeners}
-                className="bg-gray-950 p-2.5 min-h-[200px] h-[200px] rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative flex
+                onMouseEnter={() => setMouseIsOver(true)}
+                onMouseLeave={() => {
+                    setEditMode(false);
+                    setMouseIsOver(false);
+                }}
+                onMouseOver={() => setMouseIsOver(true)}
+                className="border-2 border-rose-400 bg-gray-950 py-5 p-2.5 min-h-[200px] h-[200px] rounded-xl hover:border-rose-500 cursor-grab relative flex
                 flex-col justify-between"
             > 
                 <textarea
-                    className="h-1/4 w-full resize-none border-none rounded bg-transparent text-white focus:outline-none"
+                    onClick={() => {
+                        setEditMode(true);
+                    }}
+                    onBlur={() => {
+                        setEditMode(false);
+                    }}
+                    onMouseOver={() => setMouseIsOver(true)}
+                    className="pl-2 pt-1 h-1/4 w-full resize-none border-none outline outline-1 outline-rose-400 focus:outline-white hover:outline-rose-500 rounded bg-transparent text-white "
                     value={task.content}
-                    autoFocus
                     placeholder="Task content here"
                     onKeyDown={ (e) => {
                             if(e.key === "Enter" && e.ctrlKey) {
-                                toggleEditMode();
+                                setEditMode(false);
+                                setMouseIsOver(false);
+                                e.currentTarget.blur()
                             }
                         }
                     }
                     onChange={e => updateTask(task.id, e.target.value, task.urgValue, date())}
                 >
                 </textarea>
-                <CustomSelect
-                    task={task}
-                    updateTask={updateTask}
-                />
-                <button
-                    onClick={toggleEditMode}
-                    className="absolute bottom-0 right-0 hover:text-rose-500 pr-4 pb-4">
-                    Modify
-                </button>
-            </div>
-        );
-    }
-
-    return(
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            onClick={toggleEditMode}
-            onMouseEnter={() => setMouseIsOver(true)}
-            onMouseLeave={() => setMouseIsOver(false)}
-            className="bg-gray-950 p-2.5 min-h-[200px] h-[200px] rounded-xl hover:ring-2 hover:ring-inset hover:ring-rose-500 cursor-grab relative task flex
-            flex-col gap-5 justify-between"
-        >
-            <p className="w-[85%] h-1/3 flex-grow overflow-y-scroll overflow-hidden whitespace-pre-wrap break-words">
-                {task.content}
-            </p>
-            {
+                {
                 mouseIsOver
                 &&
                 <button
@@ -119,19 +110,17 @@ export default function TaskCard({task, deleteTask, updateTask}: Props) {
                 >
                     <TrashIcon/>
                 </button>
-            }
-            <div className="flex flex-col gap-2">
-                <div className="flex gap-2">
-                    <span>Modified:</span>
-                    <span>{task.dateModified}</span>
-                </div>
-                <div className="flex gap-2">
-                    <span className="text-white" >Urgency:</span>
-                    <span className="text-white">
-                        {task.urgValue}
-                    </span>
+                }
+                <div className="flex flex-col gap-4">
+                    <CustomSelect
+                        task={task}
+                        updateTask={updateTask}
+                    />
+                    <div className="flex gap-2">
+                        <span>Modified:</span>
+                        <span>{task.dateModified}</span>
+                    </div>
                 </div>
             </div>
-        </div>
     );
 }
