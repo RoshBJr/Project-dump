@@ -122,7 +122,7 @@ export default function ColumnContainer(props:Props) {
                 </button>
             </div>
             {/* Column task container */}
-            <div className="flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-scroll">
+            <div className="touch-none flex flex-grow flex-col gap-4 p-2 overflow-x-hidden overflow-scroll">
                 <SortableContext
                     items={tasksIds}
                 >

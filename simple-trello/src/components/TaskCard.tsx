@@ -85,7 +85,7 @@ export default function TaskCard({task, deleteTask, updateTask, setColEditMode}:
                         setEditMode(false);
                     }}
                     onMouseOver={() => setMouseIsOver(true)}
-                    className="pl-2 pt-1 h-1/4 w-full resize-none border-none outline outline-1 outline-rose-400 focus:outline-white hover:outline-rose-500 rounded bg-transparent text-white "
+                    className="touch-none pl-2 pt-1 h-1/4 w-full resize-none border-none outline outline-1 outline-rose-400 focus:outline-white hover:outline-rose-500 rounded bg-transparent text-white "
                     value={task.content}
                     placeholder="Task content here"
                     onKeyDown={ (e) => {
