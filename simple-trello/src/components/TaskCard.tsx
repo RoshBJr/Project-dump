@@ -74,7 +74,7 @@ export default function TaskCard({task, deleteTask, updateTask, setColEditMode}:
                     setMouseIsOver(false);
                 }}
                 onMouseOver={() => setMouseIsOver(true)}
-                className="border-2 border-rose-400 bg-gray-950 py-5 p-2.5 min-h-[200px] h-[200px] rounded-xl hover:border-rose-500 cursor-grab relative flex
+                className="touch-none border-2 border-rose-400 bg-gray-950 py-5 p-2.5 min-h-[200px] h-[200px] rounded-xl hover:border-rose-500 cursor-grab relative flex
                 flex-col justify-between"
             > 
                 <textarea

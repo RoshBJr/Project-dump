@@ -76,7 +76,7 @@ export default function ColumnContainer(props:Props) {
             style={style}
             {...attributes}
             {...listeners}
-            className="bg-gray-900 w-[350px] h-[80vh] max-h-[80vh] rounded-md flex flex-col">
+            className="touch-none bg-gray-900 w-[350px] h-[80vh] max-h-[80vh] rounded-md flex flex-col">
             {/* Column title */}
             <div
                 onClick={() => {
